@@ -1,0 +1,26 @@
+{
+  "development": {
+    "username": "newuser",
+    "password": "password",
+    "database": "store",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "port":"5432"
+  },
+  "test": {
+    "username": "newuser",
+    "password": "password",
+    "database": "store",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "port":"5432"
+  },
+  "production": {
+    "username": "newuser",
+    "password": "password",
+    "database": "store",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "port":"5432"
+  }
+}
