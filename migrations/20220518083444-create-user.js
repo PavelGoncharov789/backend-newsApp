@@ -11,11 +11,30 @@ module.exports = {
       },
       firstName: {
         type: Sequelize.STRING,
+        allowNull: false,
+        unique: true,
       },
       lastName: {
         type: Sequelize.STRING,
+        allowNull: false,
+        unique: true,
+      },
+      login: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true,
+      },
+      password: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true,
       },
       email: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true,
+      },
+      avatar: {
         type: Sequelize.STRING,
       },
       createdAt: {
