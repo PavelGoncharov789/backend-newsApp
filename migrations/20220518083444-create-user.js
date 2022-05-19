@@ -1,4 +1,5 @@
 'use strict';
+const news = require('../models/news')
 
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -12,12 +13,10 @@ module.exports = {
       firstName: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true,
       },
       lastName: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true,
       },
       login: {
         type: Sequelize.STRING,
@@ -27,7 +26,6 @@ module.exports = {
       password: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true,
       },
       email: {
         type: Sequelize.STRING,

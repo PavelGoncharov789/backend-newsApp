@@ -9,10 +9,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      aythor: {
-        type: Sequelize.STRING,
+      author: {
+        type: Sequelize.INTEGER,
         allowNull: false,
-        unique: true,
       },
       title: {
         type: Sequelize.STRING,
@@ -24,10 +23,11 @@ module.exports = {
         allowNull: false,
         unique: true,
       },
+      tags: {
+        type: Sequelize.STRING,
+      },
       img: {
         type: Sequelize.STRING,
-        allowNull: false,
-        unique: true,
       },
       createdAt: {
         allowNull: false,
@@ -41,5 +41,5 @@ module.exports = {
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('news');
-  }
+  },
 };
