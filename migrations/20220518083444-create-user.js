@@ -1,5 +1,4 @@
 'use strict';
-const news = require('../models/news')
 
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -36,12 +35,14 @@ module.exports = {
         type: Sequelize.STRING,
       },
       createdAt: {
+        type: Sequelize.DATEONLY,
         allowNull: false,
-        type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW
       },
       updatedAt: {
+        type: Sequelize.DATEONLY,
         allowNull: false,
-        type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW
       },
     });
   },

@@ -8,6 +8,7 @@ const fileUpload = require("express-fileupload");
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+const newsController = require('./controller/NewsController');
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+app.use('/news', newsController.getAllNews);
 app.use('/user',usersRouter);
 app.use('/users', usersRouter);
 

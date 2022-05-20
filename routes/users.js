@@ -5,14 +5,16 @@ const router = express.Router();
 
 router.post('/user', async(req, res,) => {
   try {
-    const {id, 
+    const {
+      id, 
       firstname, 
       lastName, 
       login, 
       password, 
       email, 
       avatar} = req.body;
-    const post = await user.create({id,
+    const post = await user.create({
+      id,
        firstname, 
        lastName, 
        login, 
