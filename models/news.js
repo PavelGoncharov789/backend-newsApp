@@ -1,5 +1,3 @@
-'use strict';
-
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
@@ -12,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       News.belongsTo(models.User, {
         foreignKey: 'author',
-        as: 'user',
+        as: 'users',
       });
     }
   }
@@ -24,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     img: DataTypes.STRING,
   }, {
     sequelize,
-    modelName: 'news',
+    modelName: 'News',
   });
   return News;
 };
