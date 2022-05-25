@@ -14,7 +14,7 @@ router.post('/user', async (req, res) => {
       email,
       avatar,
     } = req.body;
-    const post = await user.create({
+    const post = await User.create({
       id,
       firstname,
       lastName,
