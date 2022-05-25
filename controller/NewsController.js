@@ -1,23 +1,14 @@
-const express = require("express");
-const Sequelize = require("sequelize");
-const { News, User } = require("../models");
+const express = require('express');
+const Sequelize = require('sequelize');
 
-// module.exports.getAllNews = (req, res) => {
-//   try {
-// News.findAll({ raw: true }).then((result) => {
-//   console.log(result);
-//   res.send({data: result});
-//     });
-//   } catch (e) {
-//     console.log(e);
-//   }
-// };
+const { News, User } = require('../models');
 
 module.exports = {
   async selectAll(req, res) {
-    News.findAll({ include:[{model: User, as: 'users', attributes:['id','login']}] }).then((result) => {
-      res.status(200).send({ data: result });
+    res.set('Access-Control-Allow-Origin', '*');
+    News.findAll({ include: [{ model: User, as: 'users', attributes: ['id', 'login'] }] }).then((result) => {
+      res.status(200).send(result);
     })
-    .catch((err) =>{console.log(err); res.send(500);})  
+      .catch((err) => { res.send(500); });
   },
 };
