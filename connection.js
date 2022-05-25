@@ -1,4 +1,4 @@
-const Sequelize = require('sequelize')
+const Sequelize = require('sequelize');
 
 const sequelize = new Sequelize(
   'store',
@@ -6,10 +6,10 @@ const sequelize = new Sequelize(
   'password',
   {
     dialect: 'postgres',
-  }
-)
+  },
+);
 
 sequelize
   .authenticate()
   .then(() => console.log('Connected.'))
-  .catch((err) => console.error('Connection error: ', err))
+  .catch((err) => console.error('Connection error: ', err));

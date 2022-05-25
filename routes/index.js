@@ -1,6 +1,6 @@
 const express = require('express');
 
-const selectAll = require('../controller/NewsController').selectAll;
+const { selectAll } = require('../controller/NewsController');
 
 const router = express.Router();
 
