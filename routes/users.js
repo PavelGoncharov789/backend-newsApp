@@ -14,7 +14,7 @@ router.post('/user', async (req, res) => {
       email,
       avatar,
     } = req.body;
-    const post = await User.create({
+    const user = await User.create({
       id,
       firstname,
       lastName,
@@ -22,7 +22,8 @@ router.post('/user', async (req, res) => {
       password,
       email,
       avatar,
-    })
+    });
+    res.status(200).send(user);
   } catch (e) {
     res.status(500).json(e);
   }
