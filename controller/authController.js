@@ -2,7 +2,6 @@ const { User } = require('../models');
 const user = require('../models/user');
 const jwt = require('jsonwebtoken');
 const skey = require('../config');
-// const e = require('cors');
 
 module.exports = {
   async createUser(req, res) {
