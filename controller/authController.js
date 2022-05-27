@@ -1,8 +1,14 @@
 const { User } = require('../models');
+const user = require('../models/user');
+const jwt = require('jsonwebtoken');
+const skey = require('../config');
+// const e = require('cors');
 
 module.exports = {
   async createUser(req, res) {
-    res.set('Access-Control-Allow-Origin', '*');
+    let existingUser = null;
+    existingUser = await User.findOne({ where: { login: req.body.login, email: req.body.email } });
+    if(existingUser){ return res.status(409).send({ message: 'Ошибка! Пользователь существует!' });}
     try {
       const {
         body: {
@@ -23,7 +29,8 @@ module.exports = {
         email,
         avatar,
       });
-      return res.status(200).send({ message: ` Пользователь ${newUser.login} создан!` });
+      const token = jwt.sign({Ulogin: newUser.login}, skey.sKey, { expiresIn: "24h"} )
+      return res.status(200).send({token, user});
     } catch (error) {
       return res.status(500).send({ message: 'Ошибка! Попробуйте снова!' });
     }

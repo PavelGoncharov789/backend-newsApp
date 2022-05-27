@@ -3,11 +3,14 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const cors = require('cors');
 
 const indexRouter = require('./routes/index');
 const newsRouter = require('./routes/newsRouter');
+const authRouter = require('./routes/auth')
 
 const app = express();
+app.use(cors());
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -19,6 +22,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/news', newsRouter);
+app.use('/auth', authRouter);
+// app.use('/login',)
 app.use('/', indexRouter);
 app.use(function(req, res, next) {
   next(createError(404));
