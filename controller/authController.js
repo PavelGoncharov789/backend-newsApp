@@ -3,10 +3,11 @@ const Op = Sequelize.Op;
 const { User } = require('../models');
 const user = require('../models/user');
 const jwt = require('jsonwebtoken');
-const skey = require('../config');
+const { secretKey } = require('../config');
+const bcrypt = require('bcrypt');
 
 module.exports = {
-  async createUser(req, res) {
+  async signUp(req, res) {
     try {
       const {
         body: {
@@ -19,7 +20,7 @@ module.exports = {
         },
       } = req;
 
-      const  existingUser = await User.findAll({
+      const  newUser = await User.findOrCreate({
         where: { 
           [Op.or]:[
             {
@@ -33,26 +34,54 @@ module.exports = {
               }
             }
           ]
-        }
-      });
-
-      if(existingUser.length){ 
-        return res.status(409).send({ message: 'Ошибка! Пользователь существует!' });
-      }
-
-      const newUser = await User.create({
+        },
+        defaults: {
         firstName,
         lastName,
         login,
         password,
         email,
         avatar,
+        }
       });
 
-      const token = jwt.sign({Ulogin: newUser.login}, skey.sKey, { expiresIn: "24h"} )
-      return res.status(200).send({token});
+      return res.status(200).send(newUser);
     } catch (error) {
       return res.status(500).send({ message: `Ошибка ${error}! Попробуйте снова!` });
     }
   },
+  async signIn(req, res) {
+    try {
+      const {
+        body: {
+          login,
+          password,
+        },
+      } = req;
+
+      const existingUser = await User.findOne({ where: { login } });
+
+      if(!existingUser){ 
+        return res.status(409).send({ message: 'Ошибка! Пользователь не найден!' });
+      };
+
+      const isPass = await bcrypt.compare(password, existingUser.password);
+
+      if(!isPass){
+        return res.status(409).send({ message: 'Ошибка! Пароль не верный!' })
+    }
+
+      const token = jwt.sign({userId: existingUser.id}, secretKey, { expiresIn: "24h"} );
+      return res.status(200).send({ token, user: existingUser });
+    } catch (error) {
+      return res.status(500).send({ message: 'Ошибка! Попробуйте снова!' });
+    }
+  },
+  async whoAmI(req, res, next){
+    try{
+      return res.status(200).send(req.user);
+    } catch (e) {
+      console.log(e)
+    }
+   },
 };
