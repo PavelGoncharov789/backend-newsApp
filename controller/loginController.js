@@ -27,7 +27,7 @@ module.exports = {
     }
 
       const token = jwt.sign({Ulogin: existingUser.login}, skey.sKey, { expiresIn: "24h"} );
-      return res.status(200).send({ token });
+      return res.status(200).send({ token, user: existingUser });
     } catch (error) {
       return res.status(500).send({ message: 'Ошибка! Попробуйте снова!' });
     }
