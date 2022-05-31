@@ -1,16 +1,32 @@
 const Sequelize = require('sequelize');
-const Op = Sequelize.Op;
-const { User } = require('../models');
-const user = require('../models/user');
+
+const { Op } = Sequelize;
 const jwt = require('jsonwebtoken');
+
+const { User } = require('../models');
 const { secretKey } = require('../config');
-const bcrypt = require('bcrypt');
 
 module.exports = {
   async signUp(req, res) {
     try {
       const {
         body: {
+          firstName, lastName, login, password, email, avatar,
+        },
+      } = req;
+
+      const newUser = await User.findOrCreate({
+        where: {
+          [Op.or]: [
+            {
+              login,
+            },
+            {
+              email,
+            },
+          ],
+        },
+        defaults: {
           firstName,
           lastName,
           login,
@@ -18,70 +34,47 @@ module.exports = {
           email,
           avatar,
         },
-      } = req;
-
-      const  newUser = await User.findOrCreate({
-        where: { 
-          [Op.or]:[
-            {
-             login:{
-                [Op.like]: login,
-              }
-            },
-            {
-              email:{
-                [Op.like]: email
-              }
-            }
-          ]
-        },
-        defaults: {
-        firstName,
-        lastName,
-        login,
-        password,
-        email,
-        avatar,
-        }
       });
-
+      if (newUser[1] === false) { return res.status(409).send('Такой пользователь существует!'); }
       return res.status(200).send(newUser);
     } catch (error) {
-      return res.status(500).send({ message: `Ошибка ${error}! Попробуйте снова!` });
+      return res
+        .status(500)
+        .send({ message: `Ошибка ${error}! Попробуйте снова!` });
     }
   },
   async signIn(req, res) {
     try {
       const {
-        body: {
-          login,
-          password,
-        },
+        body: { login, password },
       } = req;
 
-      const existingUser = await User.findOne({ where: { login } });
+      const user = await User.findOne({ where: { login } });
 
-      if(!existingUser){ 
-        return res.status(409).send({ message: 'Ошибка! Пользователь не найден!' });
-      };
+      if (!user) {
+        return res
+          .status(409)
+          .send({ message: 'Ошибка! Пользователь не найден!' });
+      }
 
-      const isPass = await bcrypt.compare(password, existingUser.password);
+      const isPass = await user.comparePassword(password);
 
-      if(!isPass){
-        return res.status(409).send({ message: 'Ошибка! Пароль не верный!' })
-    }
-
-      const token = jwt.sign({userId: existingUser.id}, secretKey, { expiresIn: "24h"} );
-      return res.status(200).send({ token, user: existingUser });
+      if (!isPass) {
+        return res.status(409).send({ message: 'Ошибка! Пароль не верный!' });
+      }
+      const token = jwt.sign({ userId: user.id }, secretKey, {
+        expiresIn: '24h',
+      });
+      return res.status(200).send({ token, user });
     } catch (error) {
-      return res.status(500).send({ message: 'Ошибка! Попробуйте снова!' });
+      return res.status(500).send({ message: `Ошибка ${error}! Попробуйте снова!` });
     }
   },
-  async whoAmI(req, res, next){
-    try{
+  async whoAmI(req, res) {
+    try {
       return res.status(200).send(req.user);
     } catch (e) {
-      console.log(e)
+      return res.status(401).send(`Ощибка авторизации ${e}`);
     }
-   },
+  },
 };

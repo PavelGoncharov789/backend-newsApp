@@ -7,7 +7,7 @@ const cors = require('cors');
 
 const indexRouter = require('./routes/index');
 const newsRouter = require('./routes/newsRouter');
-const authRouter = require('./routes/auth')
+const authRouter = require('./routes/auth');
 
 const app = express();
 app.use(cors());
@@ -23,13 +23,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/news', newsRouter);
 app.use('/auth', authRouter);
-// app.use('/login',)
 app.use('/', indexRouter);
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   next(createError(404));
 });
 
-app.use(function(err, req, res, next) {
+app.use((err, req, res) => {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
@@ -38,7 +37,7 @@ app.use(function(err, req, res, next) {
 });
 
 app.listen(5000, () => {
-  console.log(`Server listens port :5000`)
+  console.log('Server listens port :5000');
 });
 
 module.exports = app;
