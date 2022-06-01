@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
+const jwt = require('jsonwebtoken');
 
 const { Op } = Sequelize;
-const jwt = require('jsonwebtoken');
 
 const { User } = require('../models');
 const { secretKey } = require('../config');
@@ -35,12 +35,15 @@ module.exports = {
           avatar,
         },
       });
-      if (newUser[1] === false) { return res.status(409).send('Такой пользователь существует!'); }
-      return res.status(200).send(newUser);
+      const [user, isCreated] = newUser;
+      if (isCreated) {
+        return res.status(409).send('Такой пользователь существует!');
+      }
+      return res.status(200).send(user);
     } catch (error) {
       return res
         .status(500)
-        .send({ message: `Ошибка ${error}! Попробуйте снова!` });
+        .send({ message: 'Ошибка авторизации! Попробуйте снова!' });
     }
   },
   async signIn(req, res) {
@@ -57,9 +60,9 @@ module.exports = {
           .send({ message: 'Ошибка! Пользователь не найден!' });
       }
 
-      const isPass = await user.comparePassword(password);
+      const isCorrectPassword = await user.comparePassword(password);
 
-      if (!isPass) {
+      if (!isCorrectPassword) {
         return res.status(409).send({ message: 'Ошибка! Пароль не верный!' });
       }
       const token = jwt.sign({ userId: user.id }, secretKey, {
@@ -67,14 +70,14 @@ module.exports = {
       });
       return res.status(200).send({ token, user });
     } catch (error) {
-      return res.status(500).send({ message: `Ошибка ${error}! Попробуйте снова!` });
+      return res.status(500).send({ message: 'Ошибка! Попробуйте снова!' });
     }
   },
   async whoAmI(req, res) {
     try {
       return res.status(200).send(req.user);
-    } catch (e) {
-      return res.status(401).send(`Ощибка авторизации ${e}`);
+    } catch (error) {
+      return res.status(401).send('Ошибка при попытке авторизации');
     }
   },
 };

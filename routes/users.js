@@ -26,7 +26,7 @@ router.post('/user', async (req, res) => {
     });
     res.status(200).send(user);
   } catch (error) {
-    res.status(500).send(`Ошибка ${error}`);
+    res.status(500).send('Ошибка!');
   }
 });
 
