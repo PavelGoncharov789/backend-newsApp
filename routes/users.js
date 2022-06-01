@@ -1,4 +1,5 @@
 const express = require('express');
+
 const router = express.Router();
 
 const { User } = require('../models');
@@ -24,12 +25,12 @@ router.post('/user', async (req, res) => {
       avatar,
     });
     res.status(200).send(user);
-  } catch (e) {
-    res.status(500).json(e);
+  } catch (error) {
+    res.status(500).send('Ошибка!');
   }
 });
 
-router.get('/', function (req, res, next) {
+router.get('/', (req, res) => {
   res.send('respond with a resource');
 });
 
