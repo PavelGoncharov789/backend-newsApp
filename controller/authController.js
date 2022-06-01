@@ -1,7 +1,5 @@
-const Sequelize = require('sequelize');
+const { Op } = require('sequelize');
 const jwt = require('jsonwebtoken');
-
-const { Op } = Sequelize;
 
 const { User } = require('../models');
 const { secretKey } = require('../config');
@@ -17,14 +15,7 @@ module.exports = {
 
       const newUser = await User.findOrCreate({
         where: {
-          [Op.or]: [
-            {
-              login,
-            },
-            {
-              email,
-            },
-          ],
+          [Op.or]: [{ login }, { email }],
         },
         defaults: {
           firstName,
@@ -65,9 +56,7 @@ module.exports = {
       if (!isCorrectPassword) {
         return res.status(409).send({ message: 'Ошибка! Пароль не верный!' });
       }
-      const token = jwt.sign({ userId: user.id }, secretKey, {
-        expiresIn: '24h',
-      });
+      const token = jwt.sign({ userId: user.id }, secretKey, { expiresIn: '24h' });
       return res.status(200).send({ token, user });
     } catch (error) {
       return res.status(500).send({ message: 'Ошибка! Попробуйте снова!' });
