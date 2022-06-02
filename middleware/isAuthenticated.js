@@ -6,7 +6,7 @@ const { secretKey } = require('../config');
 module.exports = {
   async isAuthenticated(req, res, next) {
     try {
-      const token = req.headers.authorization.split(' ')[1];
+      const token = req.headers.authorization;
       const decoded = jwt.verify(token, secretKey);
       const { userId } = decoded;
       if (userId == null && userId === '') {
