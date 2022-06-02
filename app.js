@@ -24,7 +24,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/news', newsRouter);
 app.use('/auth', authRouter);
-app.use('/users', usersRouter)
+app.use('/users', usersRouter);
 app.use('/', indexRouter);
 app.use((req, res, next) => {
   next(createError(404));

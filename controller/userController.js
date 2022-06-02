@@ -2,7 +2,7 @@ const { News } = require('../models');
 
 module.exports = {
   async getUserData(req, res) {
-    const id = req.params.id;
+    const { id } = req.params;
     try {
       const userData = await News.findAll({ where: { author: id } });
       return res.status(200).send(userData);

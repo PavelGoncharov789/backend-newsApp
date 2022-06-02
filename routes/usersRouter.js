@@ -5,6 +5,6 @@ const { getUserData } = require('../controller/userController');
 
 const router = express.Router();
 
-router.get('/:id', isAuthenticated, getUserData );
+router.get('/:id', isAuthenticated, getUserData);
 
 module.exports = router;
