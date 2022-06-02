@@ -1,10 +1,18 @@
-const { News } = require('../models');
+const { User, News } = require('../models');
 
 module.exports = {
   async getUserData(req, res) {
     const { id } = req.params;
     try {
-      const userData = await News.findAll({ where: { author: id } });
+      const userData = await User.findOne(
+        {
+          where: { id },
+          include: [{
+            model: News,
+            as: 'news',
+          }],
+        },
+      );
       return res.status(200).send(userData);
     } catch (error) {
       return res
