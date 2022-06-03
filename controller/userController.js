@@ -20,4 +20,27 @@ module.exports = {
         .send({ message: 'Ошибка при получении данных пользователя.' });
     }
   },
+  async addNews(req, res) {
+    try {
+      const {
+        body: {
+          title, text, author, tags,
+        },
+      } = req;
+
+      News.create(
+        {
+          title,
+          text,
+          author,
+          tags,
+        },
+      );
+      return res.status(200).send({ message: 'Новость успешно добавлена!' });
+    } catch (errr) {
+      return res
+        .status(501)
+        .send({ message: 'Невозможно добавить материал' });
+    }
+  },
 };

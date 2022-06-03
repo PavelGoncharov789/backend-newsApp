@@ -28,7 +28,7 @@ module.exports = {
       });
       const [user, isCreated] = newUser;
       if (isCreated) {
-        return res.status(409).send('Такой пользователь существует!');
+        return res.status(409).send({ message: 'Такой пользователь существует!' });
       }
       return res.status(200).send(user);
     } catch (error) {

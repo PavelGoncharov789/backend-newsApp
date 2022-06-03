@@ -14,12 +14,10 @@ module.exports = {
       title: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true,
       },
       text: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true,
       },
       tags: {
         type: Sequelize.STRING,
