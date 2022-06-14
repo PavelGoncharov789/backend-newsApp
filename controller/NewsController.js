@@ -25,23 +25,25 @@ module.exports = {
       } = req;
 
       const {
-        dataValues: { id },
+        dataValues: { id: author },
       } = req.user;
-      if (title === '' || title === null || text === '' || text === null) {
+      if (title == '' || title == null || text == '' || text == null) {
         throw new Error('Обязательное поле не заполненно!');
       }
-      const newNews = News.create({
+      const newNews = await News.create({
         title,
         text,
-        id,
+        author,
         tags,
       });
-      newNews.then((result) => res.status(201)
-        .send({
-          message: `Новость ${result.dataValues.title} успешно добавлена!`,
-        }));
-    } catch (errr) {
-      return res.status(501).send({ message: 'Невозможно добавить материал' });
+      if(newNews) {
+        return res.status(201)
+          .send({
+            message: `Новость ${newNews.dataValues.title} успешно добавлена!`,
+          });
+      }
+    } catch (error) {
+      return res.status(500).send({ message: `Ошибка ${error.message}! Невозможно добавить материал` });
     }
   },
 };
