@@ -20,13 +20,10 @@ module.exports = {
   },
   async addNews(req, res) {
     try {
-      const {
+      const { 
         body: { title, text, tags },
+        user: { id: author },
       } = req;
-
-      const {
-        dataValues: { id: author },
-      } = req.user;
       if (title == '' || title == null || text == '' || text == null) {
         throw new Error('Обязательное поле не заполненно!');
       }
