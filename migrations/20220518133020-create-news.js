@@ -38,6 +38,6 @@ module.exports = {
     });
   },
   async down(queryInterface) {
-    await queryInterface.dropTable('news');
+    await queryInterface.dropTable('News');
   },
 };
