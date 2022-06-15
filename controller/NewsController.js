@@ -20,27 +20,28 @@ module.exports = {
   },
   async addNews(req, res) {
     try {
-      const { 
+      const {
         body: { title, text, tags },
-        user: { id: author },
+        user: { id: authorId },
       } = req;
-      if (title == '' || title == null || text == '' || text == null) {
+      if (title === '' || title == null || text === '' || text == null) {
         throw new Error('Обязательное поле не заполненно!');
       }
       const newNews = await News.create({
         title,
         text,
-        author,
+        authorId,
         tags,
       });
-      if(newNews) {
-        return res.status(201)
-          .send({
-            message: `Новость ${newNews.dataValues.title} успешно добавлена!`,
-          });
-      }
+      return res.status(201).send({
+        message: `Новость ${newNews.dataValues.title} успешно добавлена!`,
+      });
     } catch (error) {
-      return res.status(500).send({ message: `Ошибка ${error.message}! Невозможно добавить материал` });
+      return res
+        .status(500)
+        .send({
+          message: `Ошибка ${error.message}! Невозможно добавить материал`,
+        });
     }
   },
 };

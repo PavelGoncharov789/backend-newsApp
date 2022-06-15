@@ -13,7 +13,7 @@ module.exports = {
         },
       } = req;
 
-      const newUser = await User.findOrCreate({
+      const [user, isCreated] = await User.findOrCreate({
         where: {
           [Op.or]: [{ login }, { email }],
         },
@@ -26,8 +26,7 @@ module.exports = {
           avatar,
         },
       });
-      const [user, isCreated] = newUser;
-      if (isCreated) {
+      if (!isCreated) {
         return res.status(409).send({ message: 'Такой пользователь существует!' });
       }
       return res.status(200).send(user);
