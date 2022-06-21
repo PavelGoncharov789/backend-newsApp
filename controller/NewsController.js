@@ -1,4 +1,5 @@
 const { News, User } = require('../models');
+const fs = require('fs');
 
 module.exports = {
   async selectAll(req, res) {
@@ -7,7 +8,7 @@ module.exports = {
         include: [
           {
             model: User,
-            as: 'Users',
+            as: 'author',
             attributes: ['id', 'login'],
           },
         ],
@@ -24,14 +25,26 @@ module.exports = {
         body: { title, text, tags },
         user: { id: authorId },
       } = req;
+
       if (title === '' || title == null || text === '' || text == null) {
         throw new Error('Обязательное поле не заполненно!');
       }
+      let img = null;
+
+      if (req?.files?.picture) {
+        picture.mv(`${__dirname}/../public/images/news/${picture.name}`, err => {
+          if (err) {
+            throw new Error('Ошибка при добавлении изображеня!');
+          } } )
+        img = `${__dirname}/../public/images/news/${picture.name}`;
+      }
+
       const newNews = await News.create({
         title,
         text,
         authorId,
         tags,
+        img,
       });
       return res.status(201).send({
         message: `Новость ${newNews.dataValues.title} успешно добавлена!`,
