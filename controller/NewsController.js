@@ -1,5 +1,4 @@
 const { News, User } = require('../models');
-const fs = require('fs');
 
 module.exports = {
   async selectAll(req, res) {
@@ -30,13 +29,15 @@ module.exports = {
         throw new Error('Обязательное поле не заполненно!');
       }
       let img = null;
+      const picture = req?.files?.file;
 
-      if (req?.files?.picture) {
-        picture.mv(`${__dirname}/../public/images/news/${picture.name}`, err => {
+      if (picture) {
+        picture.mv(`${__dirname}/../public/images/news/${picture.name}`, (err) => {
           if (err) {
             throw new Error('Ошибка при добавлении изображеня!');
-          } } )
-        img = `${__dirname}/../public/images/news/${picture.name}`;
+          }
+        });
+        img = `/news/${picture.name}`;
       }
 
       const newNews = await News.create({
