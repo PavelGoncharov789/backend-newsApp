@@ -34,10 +34,10 @@ module.exports = {
       if (picture) {
         picture.mv(`${__dirname}/../public/images/news/${picture.name}`, (err) => {
           if (err) {
-            throw new Error('Ошибка при добавлении изображеня!');
+            throw new Error({ message: 'Ошибка при добавлении изображеня!' });
           }
         });
-        img = `/news/${picture.name}`;
+        img = `images/news/${picture.name}`;
       }
 
       const newNews = await News.create({
