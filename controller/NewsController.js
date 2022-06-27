@@ -32,7 +32,7 @@ module.exports = {
       const picture = req?.files?.file;
 
       if (picture) {
-        const random = Math.random() / Date.now();
+        const random = Date.now();
         picture.mv(`${__dirname}/../public/images/news/${random}_${picture.name}`, (err) => {
           if (err) {
             throw new Error({ message: 'Ошибка при добавлении изображеня!' });
