@@ -1,10 +1,11 @@
 const express = require('express');
 
 const { isAuthenticated } = require('../middleware');
-const { getUserData } = require('../controller/userController');
+const { getUserData, addAvatar } = require('../controller/userController');
 
 const router = express.Router();
 
 router.get('/:id', isAuthenticated, getUserData);
+router.post('/avatar', isAuthenticated, addAvatar);
 
 module.exports = router;
