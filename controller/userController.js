@@ -1,6 +1,6 @@
-const { User, News } = require('../models');
 const fs = require('fs');
-const { log } = require('console');
+
+const { User, News } = require('../models');
 
 module.exports = {
   async getUserData(req, res) {
@@ -31,24 +31,16 @@ module.exports = {
       let img = null;
       const picture = req?.files?.file;
 
-      const editableUser = await User.findAll({
-        where: {
-          id,
-        },
-      });
-
       if (picture) {
-        if (editableUser[0].dataValues.avatar) {
-          fs.unlink(
-            `${__dirname}/../public/${editableUser[0].dataValues.avatar}`,
-            function (err) {
-              if (err) {
-                return res
-                  .status(500)
-                  .send({ message: `Ошибка ${error.message}! Ошибка замены ` });
-              }
+        const { avatar } = await User.findByPk(id);
+        if (avatar) {
+          fs.unlink(`${__dirname}/../public/${avatar}`, function (err) {
+            if (err) {
+              return res
+                .status(500)
+                .send({ message: `Ошибка ${error.message}! Ошибка замены ` });
             }
-          );
+          });
         }
         picture.mv(
           `${__dirname}/../public/images/avatar/${id}.${
@@ -56,11 +48,9 @@ module.exports = {
           }`,
           (err) => {
             if (err) {
-              return res
-                .status(500)
-                .send({
-                  message: `Ошибка ${error.message}! Ошибка добавления файла `,
-                });
+              return res.status(500).send({
+                message: `Ошибка ${error.message}! Ошибка добавления файла `,
+              });
             }
           }
         );
@@ -69,6 +59,9 @@ module.exports = {
 
       try {
         const result = await User.update({ avatar: img }, { where: { id } });
+        return res.status(200).send({
+          message: `Аватар успешно добавлен!`,
+        });
       } catch (err) {
         return res
           .status(500)
