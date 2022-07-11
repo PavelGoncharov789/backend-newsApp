@@ -1,6 +1,6 @@
 module.exports = {
   async up(queryInterface) {
-    return queryInterface.bulkInsert('news', [{
+    return queryInterface.bulkInsert('News', [{
       id: 1,
       authorId: 1,
       title: 'Doe12',
@@ -10,6 +10,6 @@ module.exports = {
   },
 
   async down(queryInterface) {
-    return queryInterface.bulkDelete('news', null, {});
+    return queryInterface.bulkDelete('News', null, {});
   },
 };
