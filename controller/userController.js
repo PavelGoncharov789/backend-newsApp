@@ -38,7 +38,7 @@ module.exports = {
             if (err) {
               return res
                 .status(500)
-                .send({ message: `Ошибка ${error.message}! Ошибка замены ` });
+                .send({ message: ` Ошибка при обновлении аватара! ` });
             }
           });
         }
@@ -48,20 +48,24 @@ module.exports = {
           }`,
           (err) => {
             if (err) {
-              return res.status(500).send({
+              return res.status(400).send({
                 message: `Ошибка ${error.message}! Ошибка добавления файла `,
               });
             }
           }
         );
         img = `images/avatar/${id}.${picture.name.split('.').slice(-1)[0]}`;
+      } else {
+        throw new Error({ message: 'Файл отсутствует' });
       }
 
       try {
-        const result = await User.update({ avatar: img }, { where: { id } });
-        return res.status(200).send({
-          message: `Аватар успешно добавлен!`,
-        });
+        if(img){
+          const result = await User.update({ avatar: img }, { where: { id } });
+          return res.status(200).send({
+            message: `Аватар успешно добавлен!`,
+          });
+        }
       } catch (err) {
         return res
           .status(500)
