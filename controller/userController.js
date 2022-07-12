@@ -9,7 +9,7 @@ module.exports = {
           where: { id },
           include: [{
             model: News,
-            as: 'news',
+            as: 'News',
           }],
         },
       );
