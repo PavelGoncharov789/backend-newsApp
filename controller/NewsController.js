@@ -7,7 +7,7 @@ module.exports = {
         include: [
           {
             model: User,
-            as: 'User',
+            as: 'author',
             attributes: ['id', 'login'],
           },
         ],
