@@ -6,8 +6,8 @@ module.exports = {
       login: 'JohnD',
       password: '789',
       email: 'asdaq@mdsfa.cv',
-      createdAt:new Date(),
-      updatedAt:new Date(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
     }]);
   },
 
