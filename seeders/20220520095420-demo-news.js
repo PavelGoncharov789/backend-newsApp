@@ -6,6 +6,8 @@ module.exports = {
       title: 'Doe12',
       text: 'JohnD',
       tags: '789',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     }]);
   },
 

@@ -4,6 +4,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
+const fileUpload = require('express-fileupload');
 
 const indexRouter = require('./routes/index');
 const newsRouter = require('./routes/newsRouter');
@@ -12,6 +13,7 @@ const usersRouter = require('./routes/usersRouter');
 
 const app = express();
 app.use(cors());
+app.use(fileUpload({}));
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
