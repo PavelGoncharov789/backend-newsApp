@@ -12,9 +12,9 @@ module.exports = {
           {
             model: News,
             as: 'news',
-          },
-        ],
-      });
+          }],
+        },
+      );
       return res.status(200).send(userData);
     } catch (error) {
       return res
