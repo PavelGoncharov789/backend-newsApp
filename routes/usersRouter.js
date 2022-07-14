@@ -6,6 +6,6 @@ const { getUserData, addAvatar } = require('../controller/userController');
 const router = express.Router();
 
 router.get('/:id', isAuthenticated, getUserData);
-router.post('/changeAvatar', isAuthenticated, addAvatar);
+router.post('/changeavatar', isAuthenticated, addAvatar);
 
 module.exports = router;
